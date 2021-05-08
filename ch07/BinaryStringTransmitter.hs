@@ -24,3 +24,12 @@ chop8 bits = take 8 bits : chop8 (drop 8 bits)
 
 decode :: [Bit] -> String
 decode = map (chr . bin2int) . chop8
+
+-- Simulate transmission with a perfect communication channel
+-- that we model using the identity function
+transmit :: String -> String
+transmit = decode . channel . encode
+
+-- Channel of bits simulation (does nothing)
+channel :: [Bit] -> [Bit]
+channel = id

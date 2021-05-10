@@ -27,6 +27,9 @@ height = 10
 glider :: Board
 glider = [(4,2), (2,3), (4,3), (3,4), (4,4)]
 
+blinkr :: Board
+blinkr = [(5,4), (5,5), (5,6)]
+
 isAlive :: Board -> Pos -> Bool
 isAlive b p = elem p b
 
@@ -49,11 +52,20 @@ liveneighbs b = length . filter (isAlive b) . neighbs
 survivors :: Board -> [Pos]
 survivors b = [p | p <- b, elem (liveneighbs b p) [2,3]]
 
+-- births :: Board -> [Pos]
+-- births b = [ (x,y) | x <- [1..width],
+--                      y <- [1..height],
+--                      isEmpty b (x,y),
+--                      liveneighbs b (x,y) == 3]
+
 births :: Board -> [Pos]
-births b = [ (x,y) | x <- [1..width],
-                     y <- [1..height],
-                     isEmpty b (x,y),
-                     liveneighbs b (x,y) == 3]
+births b = [ p | p <- rmdups (concat (map neighbs b)),
+                 isEmpty b p,
+                 liveneighbs b p == 3]
+
+rmdups :: Eq a => [a] -> [a]
+rmdups []     = []
+rmdups (x:xs) = x : rmdups (filter(/= x) xs)
 
 nextgen :: Board -> Board
 nextgen b = survivors b ++ births b

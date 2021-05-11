@@ -1,4 +1,5 @@
 import Data.Char
+import System.IO
 
 adder :: IO ()
 adder = do putStr "How many numbers? "
@@ -24,6 +25,25 @@ getNumber :: IO Int
 getNumber = do n <- getLine
                return (read n :: Int)
 
+getCh :: IO Char
+getCh = do hSetEcho stdin False
+           c <- getChar
+           hSetEcho stdin True
+           return c
+
+readLine :: IO String
+readLine = readLine' []
+readLine' xs = do x <- getCh
+                  if x == '\n' then
+                    do putChar x
+                       return xs
+                  else if x == '\DEL' then
+                    do putStr "\b \b"
+                       readLine' (init xs)
+                  else
+                    do putChar x
+                       readLine' (xs ++ [x])
+            
 getDigit :: IO Int
 getDigit = do n <- getChar
               if isDigit n then

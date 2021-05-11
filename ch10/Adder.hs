@@ -22,7 +22,7 @@ getNumbers' :: Int -> IO [Int]
 getNumbers' n = sequence [getNumber | _ <- [1..n]]
 
 getNumber :: IO Int
-getNumber = do n <- getLine
+getNumber = do n <- readLine
                return (read n :: Int)
 
 getCh :: IO Char

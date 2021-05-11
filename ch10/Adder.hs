@@ -2,7 +2,7 @@ import Data.Char
 
 adder :: IO ()
 adder = do putStr "How many numbers? "
-           n <- getDigit
+           n <- getNumber
            getNumbers n []
 
 getNumbers :: Int -> [Int] -> IO ()
@@ -11,9 +11,13 @@ getNumbers n xs = do if n==0 then
                            return ()
                      else 
                         do putChar '\n'
-                           num <- getDigit
+                           num <- getNumber
                            getNumbers (n-1) (num:xs)
                 
+
+getNumber :: IO Int
+getNumber = do n <- getLine
+               return (read n :: Int)
 
 getDigit :: IO Int
 getDigit = do n <- getChar

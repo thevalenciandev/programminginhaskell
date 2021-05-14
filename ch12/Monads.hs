@@ -16,3 +16,9 @@ safeeval (Div x y) = case safeeval x of
                         Just n  -> case safeeval y of
                                       Nothing -> Nothing
                                       Just m  -> safediv n m
+
+safeeval' :: Expr -> Maybe Int
+safeeval' (Val x)   = return x
+safeeval' (Div x y) = do n <- safeeval x
+                         m <- safeeval y
+                         safediv n m

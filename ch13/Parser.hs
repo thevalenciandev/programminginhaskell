@@ -21,3 +21,10 @@ item :: Parser Char
 item = P (\inp -> case inp of
                     []     -> []
                     (x:xs) -> [(x,xs)])
+
+-- Implementing Functor, Applicative and Monad
+instance Functor Parser where
+  -- fmap :: (a -> b) -> Parser a -> Parser b
+  fmap g p = P (\inp -> case parse p inp of
+                          []        -> []
+                          [(v,out)] -> [(g v, out)])
